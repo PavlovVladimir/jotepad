@@ -140,7 +140,7 @@ class UI extends JFrame {
         } catch (Exception ex) {
             System.out.println("Cannot read save icon" + ex);
         }
-        nextMatchButton.setName("PreviousMatchButton");
+        nextMatchButton.setName("NextMatchButton");
 
         useRegExCheckbox.setName("UseRegexCheckbox");
 
