@@ -10,9 +10,10 @@ class UI extends JFrame {
     private final JMenuBar menuBar = new JMenuBar();
     private JTextArea textArea;
     private JTextField searchField = new JTextField();
+    private PositionFinder positionFinder = new PositionFinder();
+    private JCheckBox useRegExCheckbox = new JCheckBox("Use regex");
     private boolean isRegexp = false;
-    PositionFinder positionFinder = new PositionFinder();
-    int caretPosition = 0;
+    private int caretPosition = 0;
 
     public UI() {
         super("Text Editor");
@@ -77,6 +78,11 @@ class UI extends JFrame {
         JMenuItem menuUseRegExp = new JMenuItem("Use regular expression");
         menuUseRegExp.setName("MenuUseRegExp");
         menuSearch.add(menuUseRegExp);
+
+        menuStartSearch.addActionListener(event -> newFind());
+        menuPreviousMatch.addActionListener(event -> previousFind());
+        menuNextMatch.addActionListener(event -> nextFind());
+        menuUseRegExp.addActionListener(event -> useRegExCheckbox.doClick());
     }
 
     private void initWorkSpace() {
@@ -86,7 +92,6 @@ class UI extends JFrame {
         panel.setBackground(Color.GREEN);
         add(panel, BorderLayout.NORTH);
 
-//        JTextField searchField = new JTextField();
         searchField.setName("SearchField");
 //        filenameField.setMinimumSize(new Dimension(100, 25));
         searchField.setPreferredSize(new Dimension(400, 25));
@@ -110,7 +115,6 @@ class UI extends JFrame {
         }
         openButton.setName("OpenButton");
 
-        // Stage 4
         JButton startSearchButton = new JButton();
         try {
             Image img = ImageIO.read(getClass().getResource("resources/search_24.png"));
@@ -138,7 +142,6 @@ class UI extends JFrame {
         }
         nextMatchButton.setName("PreviousMatchButton");
 
-        JCheckBox useRegExCheckbox = new JCheckBox("Use regex");
         useRegExCheckbox.setName("UseRegexCheckbox");
 
         panel.add(openButton);
@@ -158,19 +161,10 @@ class UI extends JFrame {
 
         openButton.addActionListener(event -> loadFile());
         saveButton.addActionListener(event -> saveFile());
-        startSearchButton.addActionListener(event -> find());
+        startSearchButton.addActionListener(event -> newFind());
         useRegExCheckbox.addActionListener(event -> setCheckBox());
-        previousMatchButton.addActionListener(event -> {
-            caretPosition--;
-            if (caretPosition < 0) {
-                caretPosition = 0;
-            }
-            find();
-        });
-        nextMatchButton.addActionListener(event -> {
-            caretPosition++;
-            find();
-        });
+        previousMatchButton.addActionListener(event -> previousFind());
+        nextMatchButton.addActionListener(event -> nextFind());
     }
 
     private void loadFile() {
@@ -181,29 +175,41 @@ class UI extends JFrame {
         file.saveFile(textArea.getText());
     }
 
+    private void newFind() {
+        caretPosition = 0;
+        find();
+    }
+
+    private void previousFind() {
+        caretPosition--;
+        find();
+    }
+
+    private void nextFind() {
+        caretPosition++;
+        find();
+    }
+
     private void find() {
         Indexies indexies;
-        positionFinder.setText(textArea.getText());
+        int startIndex = 0;
+        int endIndex = 0;
+        String text = textArea.getText();
+        String pattern = searchField.getText();
+
+        positionFinder.setText(text);
         positionFinder.setIsRegexp(isRegexp);
-        positionFinder.setPatternString(searchField.getText());
+        positionFinder.setPatternString(pattern);
+        positionFinder.find();
 
-        try {
-            indexies = positionFinder.getIndex(caretPosition);
-        } catch (IndexOutOfBoundsException e) {
-            positionFinder.find();
-            indexies = positionFinder.getIndex(caretPosition);
-
-        }
-
-        //textArea.setCaretPosition(index + foundText.length());
-
-
-        int startIndex = indexies.getStartIndex();
-        int endIndex = indexies.getEndIndex();
+        indexies = positionFinder.getIndex(caretPosition);
+        startIndex = indexies.getStartIndex();
+        endIndex = indexies.getEndIndex();
         textArea.select(startIndex, endIndex);
         textArea.grabFocus();
 
-//        textArea.select(startIndex, index + foundText.length());
+        //textArea.setCaretPosition(index + foundText.length());
+        //        textArea.select(startIndex, index + foundText.length());
 //        textArea.grabFocus();
     }
 
