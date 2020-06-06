@@ -14,7 +14,7 @@ class PositionFinder {
 
         if (isSearchNotCompleted()) {
             try {
-                Finder thread = new Finder(text,patternString);
+                Finder thread = new Finder(text, patternString);
                 thread.start();
                 thread.join();
                 arrayOfIndexies = thread.getArrayOfIndexies();
@@ -70,13 +70,5 @@ class PositionFinder {
 
     public void setIsRegexp(boolean isRegexp) {
         isStringRegexp = isRegexp;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getPatternString() {
-        return patternString;
     }
 }
