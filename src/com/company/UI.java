@@ -142,7 +142,7 @@ class UI extends JFrame {
         }
         nextMatchButton.setName("NextMatchButton");
 
-        useRegExCheckbox.setName("UseRegexCheckbox");
+        useRegExCheckbox.setName("UseRegExCheckbox");
 
         panel.add(openButton);
         panel.add(saveButton);
