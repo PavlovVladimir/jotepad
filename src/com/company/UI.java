@@ -36,9 +36,9 @@ class UI extends JFrame {
         menuFile.setName("MenuFile");
         menuBar.add(menuFile);
 
-        JMenuItem menuOpen = new JMenuItem("Load");
+        JMenuItem menuOpen = new JMenuItem("Open");
         menuOpen.setMnemonic(KeyEvent.VK_L);
-        menuOpen.setName("MenuLoad");
+        menuOpen.setName("MenuOpen");
         menuFile.add(menuOpen);
 
         JMenuItem menuSave = new JMenuItem("Save");
