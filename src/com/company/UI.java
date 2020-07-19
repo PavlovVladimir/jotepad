@@ -89,8 +89,8 @@ class UI extends JFrame {
         JPanel panel = new JPanel();
         panel.setName("Panel");
         panel.setLayout(new FlowLayout());
-        panel.setBackground(Color.GREEN);
         add(panel, BorderLayout.NORTH);
+//        panel.setBackground(Color.GREEN);
 
         searchField.setName("SearchField");
 //        filenameField.setMinimumSize(new Dimension(100, 25));
